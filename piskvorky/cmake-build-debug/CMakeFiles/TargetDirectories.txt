@@ -1,3 +1,0 @@
-C:/studenti/2024-2025/IT2/piskvorky/cmake-build-debug/CMakeFiles/piskvorky.dir
-C:/studenti/2024-2025/IT2/piskvorky/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/studenti/2024-2025/IT2/piskvorky/cmake-build-debug/CMakeFiles/rebuild_cache.dir
