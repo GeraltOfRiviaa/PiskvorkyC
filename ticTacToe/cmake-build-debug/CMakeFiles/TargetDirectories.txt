@@ -1,0 +1,3 @@
+F:/student/it2/P1/ticTacToe/cmake-build-debug/CMakeFiles/ticTacToe.dir
+F:/student/it2/P1/ticTacToe/cmake-build-debug/CMakeFiles/edit_cache.dir
+F:/student/it2/P1/ticTacToe/cmake-build-debug/CMakeFiles/rebuild_cache.dir
