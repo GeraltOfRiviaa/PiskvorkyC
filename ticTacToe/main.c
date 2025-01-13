@@ -209,7 +209,7 @@ int main() {
         if (connectedCount >= WIN_CONDITION) {
             displayBoard(board);
             printf("\nPlayer %c wins with %d connected symbols!\n",
-                   currentPlayer, connectedCount);
+                currentPlayer, connectedCount);
             gameWon = true;
         } else {
             currentPlayer = (currentPlayer == PLAYER_X) ? PLAYER_O : PLAYER_X;
