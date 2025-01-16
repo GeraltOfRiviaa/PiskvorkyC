@@ -4,221 +4,271 @@
 #include <time.h>
 
 #define SIZE 15
-int board [SIZE][SIZE];
 #define HRAC 'x'
-#define PC  'o'
+#define PC 'o'
 #define WIN_COUNT 5
 
+void vytiskVyherce(char hrac)
+{
+    if (hrac == HRAC)
+    {
+        printf("Vyhral jsi!");
+    }
+    else if (hrac = PC)
+    {
+        printf("Vyhral PC!");
+    }
+    else
+    {
+        printf("Remiza");
+    }
+}
 
-void resetovaniHry(){
-
+void resetovaniHry(char board[SIZE][SIZE])
+{
     for (int i = 0; i < SIZE; i++)
     {
         for (int j = 0; j < SIZE; j++)
         {
             board[i][j] = ' ';
         }
-        
     }
-    
-
 }
-void tistenyHry(){
-    //cele sam  :)
+
+void tistenyHry(char board[SIZE][SIZE])
+{
+    // cele sam  :)
     printf("                                     PISKVORKY                                      \n");
     printf("----|--------------------------------------------------------------------------|----\n");
     printf("    |");
 
     for (int i = 0; i < SIZE; i++)
     {
-        printf("%4d|", i +1);
+        printf("%4d|", i + 1);
     }
     printf("\n----|--------------------------------------------------------------------------|----\n");
 
     for (int i = 0; i < SIZE; i++)
     {
-        printf("%4d|", i +1);
+        printf("%4d|", i + 1);
         for (int j = 0; j < SIZE; j++)
         {
-            //tohle mi teda napověděl, ale upravil jsem do tak, aby to sedělo k mojemu kodu
+            // tohle mi teda napověděl, ale upravil jsem do tak, aby to sedělo k mojemu kodu
             printf("%4c|", board[i][j]);
         }
         printf("\n");
         printf("----|--------------------------------------------------------------------------|----\n");
     }
-    
-
 }
 
-int volnaMista(){
-    int volno = SIZE*SIZE;
+int volnaMista(char board[SIZE][SIZE])
+{
+    int volno = SIZE * SIZE;
     for (int i = 0; i < SIZE; i++)
     {
         for (int j = 0; j < SIZE; j++)
         {
-        if (board[i][j] != ' '){
-            volno--;
-        }
+            if (board[i][j] != ' ')
+            {
+                volno--;
+            }
         }
     }
     return volno;
 }
-void hracKolo(){
+void hracKolo(char board[SIZE][SIZE])
+{
     int x, y;
 
-do
-{
-    printf("Zadejte x: ");
-    scanf("%d", &x);
-    printf("Zadejte y: ");
-    scanf("%d", &y);
-    x--;
-    y--;
+    do
+    {
+        printf("Zadejte x: ");
+        scanf("%d", &x);
+        printf("Zadejte y: ");
+        scanf("%d", &y);
+        x--;
+        y--;
 
-    if (board[x][y] != ' '){
-        printf("Tam nemuzes!\n");
-    }
-    else{
-        board[x][y] = HRAC;
-        break;
-    }
-} while (board [x][y] != ' ');
+        if (board[y][x] != ' ')
+        {
+            printf("Tam nemuzes!\n");
+        }
+        else
+        {
+            board[y][x] = HRAC;
+            break;
+        }
+    } while (board[y][x] != ' ');
 }
 
-void pcKolo(){
+void pcKolo(char board[SIZE][SIZE])
+{
     srand(time(0));
     int x;
     int y;
-    if(volnaMista() > 0){
+    if (volnaMista(board) > 0)
+    {
         do
         {
             x = rand() % SIZE - 1;
             y = rand() % SIZE - 1;
-            
-        } while (board[x][y] != ' ');
-        board[x][y] = PC;
-        
+
+        } while (board[y][x] != ' ');
+        board[y][x] = PC;
     }
-    else{
+    else
+    {
         vytiskVyherce(' ');
     }
 }
-char vyhra(){
+char vyhra(char board[SIZE][SIZE])
+{
     int count = 0;
-    int Row,Col = 0;
-    //kontroluje řádky
-    //cele sam!!!!Uplne cele krom toho board[i][j] == board[i][j+1] a diagonal!!!!!!
+    // kontroluje řádky
+    // cele sam!!!!Uplne cele krom toho board[i][j] == board[i][j+1] a diagonal!!!!!!
 
-    //kontroluje řádky
+    // kontroluje řádky
     for (int row = 0; row < SIZE; row++)
     {
-        for (int col = 0; col < SIZE; col++)
+        for (int col = 0; col < SIZE - 1; col++)
         {
-            if(count == 4){
-                return board[row][col];
+            if (count == WIN_COUNT)
+            {
+                return 1;
             }
-            else{
-                if(board[row][col] == board[row][col+1]){
-                count++;
-            }
-            else{
-                count = 0;
-            }
+            else
+            {
+                char cell = board[row][col];
+
+                if (cell != ' ' &&  cell == board[row][col])
+                {
+                    count++;
+                }
+                else
+                {
+                    count = 0;
+                }
             }
         }
     }
-    //kontroluje sloupce
+    // kontroluje sloupce
     for (int col = 0; col < SIZE; col++)
     {
-        for (int row = 0; row < SIZE; row++)
+        for (int row = 0; row < SIZE - 1; row++)
         {
-            if(count == 4){
-                return board[row][col];
+            if (count == WIN_COUNT)
+            {
+                return 1;
             }
-            else{
-                if(board[row][col] == board[row][col]){
-                count++;
-            }
-            else{
-                count = 0;
-            }
+            else
+            {
+                char cell = board[row][col];
+
+                if (cell != ' ' && cell == board[row][col])
+                {
+                    count++;
+                }
+                else
+                {
+                    count = 0;
+                }
             }
         }
     }
     // Kontrola diagonál zleva doprava (\)
-    for (int row = 0; row < SIZE - WIN_COUNT + 1; row++) {
-        for (int col = 0; col < SIZE - WIN_COUNT + 1; col++) {
+    for (int row = 0; row < SIZE - WIN_COUNT + 1; row++)
+    {
+        for (int col = 0; col < SIZE - WIN_COUNT + 1; col++)
+        {
             count = 0;
-            for (int k = 0; k < WIN_COUNT; k++) {
-                if (board[row + k][col + k] == HRAC) {
+            char checkedChar = board[row][col];
+
+            if (checkedChar == ' ')
+            {
+                continue;
+            }
+
+
+            for (int k = 0; k < WIN_COUNT; k++)
+            {
+                if (board[row + k][col + k] == checkedChar)
+                {
                     count++;
-                } else {
+                }
+                else
+                {
                     break;
                 }
             }
-            if (count == WIN_COUNT) {
-                return board[row][col];
+            if (count == WIN_COUNT)
+            {
+                return 1;
             }
         }
     }
 
     // Kontrola diagonál zprava doleva (/)
-    for (int row = 0; row < SIZE - WIN_COUNT + 1; row++) {
-        for (int col = WIN_COUNT - 1; col < SIZE; col++) {
+    for (int row = 0; row < SIZE - WIN_COUNT + 1; row++)
+    {
+        for (int col = WIN_COUNT - 1; col < SIZE; col++)
+        {
             count = 0;
-            for (int k = 0; k < WIN_COUNT; k++) {
-                if (board[row + k][col - k] == HRAC) {
+            char checkedChar = board[row][col];
+
+            if (checkedChar == ' ')
+            {
+                continue;
+            }
+
+            for (int k = 0; k < WIN_COUNT; k++)
+            {
+                if (board[row + k][col - k] == checkedChar)
+                {
                     count++;
-                } else {
+                }
+                else
+                {
                     break;
                 }
             }
-            if (count == WIN_COUNT) {
-                return board[row][col];
+            if (count == WIN_COUNT)
+            {
+                return 1;
             }
         }
     }
-    
+
+   return 0;
 }
-void vytiskVyherce(char i){
-if (i == HRAC)
+
+int main()
 {
-    printf("Vyhral si!");
-}
-else if (i = PC){
-    printf("Vyhral PC!");
-}
-else{
-    printf("Remiza");
-}
+    char board[SIZE][SIZE];
+    char vyherce = ' ';
 
-}
-
-
-    
-    
-
-int main (){
-char vyherce = ' ';
-
-resetovaniHry();
-while (vyherce == ' ' && volnaMista() != 0)
-{
-    tistenyHry();
-    hracKolo();
-    vyherce = vyhra();
-    if (vyherce != ' ' ||volnaMista()==0){
-        break;
+    resetovaniHry(board);
+    while (volnaMista(board) != 0)
+    {
+        tistenyHry(board);
+        hracKolo(board);
+        if (vyhra(board)) {
+	   vyherce = HRAC;
+	}
+        if (vyherce != ' ' || volnaMista(board) == 0)
+        {
+            break;
+        }
+        pcKolo(board);
+        if (vyhra(board)) {
+	   vyherce = PC;
+	}
+        if (vyherce != ' ' || volnaMista(board) == 0)
+        {
+            break;
+        }
     }
-    pcKolo();
-    vyherce = vyhra();
-    if (vyherce != ' ' ||volnaMista()==0){
-        break;
-    }
-}
-tistenyHry();
-vytiskVyherce(vyherce);
+    tistenyHry(board);
+    vytiskVyherce(vyherce);
 
-
-return 0;
+    return 0;
 }
